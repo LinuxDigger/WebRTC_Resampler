@@ -91,6 +91,8 @@ int16_t *resampler(int16_t *data_in, size_t totalSampleCount, size_t in_sample_r
     size_t maxLen = out_sample_rate / 100;
     const int channels = 1;
     Resampler rs;
+    if (rs.Reset(in_sample_rate, out_sample_rate, channels) == -1)
+        return nullptr;
     size_t outLen = (size_t) (totalSampleCount * out_sample_rate / in_sample_rate);
     int16_t *data_out = (int16_t *) malloc(outLen * sizeof(int16_t));
     if (data_out == nullptr) return nullptr;
@@ -98,7 +100,7 @@ int16_t *resampler(int16_t *data_in, size_t totalSampleCount, size_t in_sample_r
     size_t nLast = totalSampleCount - (lengthIn * nCount);
     int16_t *samplesIn = data_in;
     int16_t *samplesOut = data_out;
-    rs.Reset(in_sample_rate, out_sample_rate, channels);
+
     outLen = 0;
     for (int i = 0; i < nCount; i++) {
         rs.Push(samplesIn, lengthIn, samplesOut, maxLen, outLen);
@@ -149,7 +151,7 @@ int main(int argc, char *argv[]) {
     char out_file[1024];
     splitpath(in_file, drive, dir, fname, ext);
     sprintf(out_file, "%s%s%s_out%s", drive, dir, fname, ext);
-    ResampleTo(in_file, out_file, 32000);
+    ResampleTo(in_file, out_file, 64000);
     printf("按任意键退出程序 \n");
     getchar();
     return 0;
