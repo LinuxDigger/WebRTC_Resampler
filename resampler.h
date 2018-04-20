@@ -14,7 +14,8 @@
 #define  nullptr NULL
 #endif
 
-#include <cstddef>
+#include <stdio.h>
+#include <stddef.h>
 
 // Processor architecture detection.  For more info on what's defined, see:
 //   http://msdn.microsoft.com/en-us/library/b0084kay.aspx
@@ -62,7 +63,7 @@
 #define WEBRTC_CPU_DETECTION
 #endif
 
-#include <cstdint>
+#include <stdint.h>
 
 // Annotate a function indicating the caller must examine the return value.
 // Use like:
@@ -141,7 +142,7 @@ void WebRtcSpl_LPBy2ShortToInt(const int16_t *in, int32_t len,
                                int32_t *out, int32_t *state);
 
 
-#include <cstring>
+#include <string.h>
 
 // C + the 32 most significant bits of A * B
 #define WEBRTC_SPL_SCALEDIFF32(A, B, C) \
@@ -296,7 +297,7 @@ class Resampler {
 public:
     Resampler();
 
-    Resampler(int inFreq, int outFreq, size_t num_channels);
+    Resampler(size_t inFreq, size_t outFreq, size_t num_channels);
 
     ~Resampler();
 
@@ -304,7 +305,7 @@ public:
     int Reset(size_t inFreq, size_t outFreq, size_t num_channels);
 
     // Reset all states if any parameter has changed
-    int ResetIfNeeded(int inFreq, int outFreq, size_t num_channels);
+    int ResetIfNeeded(size_t inFreq, size_t outFreq, size_t num_channels);
 
     // Resample samplesIn to samplesOut.
     int Push(const int16_t *samplesIn, size_t lengthIn, int16_t *samplesOut,
@@ -335,6 +336,12 @@ private:
         kResamplerMode11To8
     };
 
+    // Computes the resampler mode for a given sampling frequency pair.
+    // Returns -1 for unsupported frequency pairs.
+    static int ComputeResamplerMode(int in_freq_hz,
+                                    int out_freq_hz,
+                                    ResamplerMode *mode);
+
     // Generic pointers since we don't know what states we'll need
     void *state1_;
     void *state2_;
@@ -348,8 +355,8 @@ private:
     size_t in_buffer_size_max_;
     size_t out_buffer_size_max_;
 
-    int my_in_frequency_khz_;
-    int my_out_frequency_khz_;
+    size_t my_in_frequency_khz_;
+    size_t my_out_frequency_khz_;
     ResamplerMode my_mode_;
     size_t num_channels_;
 
