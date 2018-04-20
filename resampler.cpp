@@ -8,8 +8,8 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#include <cstdlib>
-#include <cstring>
+#include <stdlib.h>
+#include <string.h>
 
 #include "resampler.h"
 
@@ -459,7 +459,7 @@ void WebRtcSpl_DownsampleBy2(const int16_t *in, size_t len,
 
     for (i = (len >> 1); i > 0; i--) {
         // lower allpass filter
-        in32 = (int32_t) (*in++) << 10;
+        in32 = (int32_t) (*in++) * (1 << 10);
         diff = in32 - state1;
         tmp1 = MUL_ACCUM_1(kResampleAllpass2[0], diff, state0);
         state0 = in32;
@@ -471,7 +471,7 @@ void WebRtcSpl_DownsampleBy2(const int16_t *in, size_t len,
         state2 = tmp2;
 
         // upper allpass filter
-        in32 = (int32_t) (*in++) << 10;
+        in32 = (int32_t) (*in++) * (1 << 10);
         diff = in32 - state5;
         tmp1 = MUL_ACCUM_1(kResampleAllpass1[0], diff, state4);
         state4 = in32;
@@ -516,7 +516,7 @@ void WebRtcSpl_UpsampleBy2(const int16_t *in, size_t len,
 
     for (i = len; i > 0; i--) {
         // lower allpass filter
-        in32 = (int32_t) (*in++) << 10;
+        in32 = (int32_t) (*in++) * (1 << 10);
         diff = in32 - state1;
         tmp1 = MUL_ACCUM_1(kResampleAllpass1[0], diff, state0);
         state0 = in32;
@@ -879,24 +879,6 @@ void WebRtcSpl_ResetResample16khzTo48khz(WebRtcSpl_State16khzTo48khz *state) {
     memset(state->S_24_48, 0, 8 * sizeof(int32_t));
 }
 
-/* resample.c
-*  Copyright (c) 2011 The WebRTC project authors. All Rights Reserved.
-*
-*  Use of this source code is governed by a BSD-style license
-*  that can be found in the LICENSE file in the root of the source
-*  tree. An additional intellectual property rights grant can be found
-*  in the file PATENTS.  All contributing project authors may
-*  be found in the AUTHORS file in the root of the source tree.
-*/
-
-
-/*
-* This file contains the resampling functions for 22 kHz.
-* The description header can be found in signal_processing_library.h
-*
-*/
-
-// Declaration of internally used functions
 static void WebRtcSpl_32khzTo22khzIntToShort(const int32_t *In, int16_t *Out,
                                              int32_t K);
 
