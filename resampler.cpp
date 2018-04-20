@@ -1421,12 +1421,12 @@ int Resampler::ResetIfNeeded(size_t inFreq, size_t outFreq, size_t num_channels)
 
 int Resampler::Reset(size_t inFreq, size_t outFreq, size_t num_channels) {
     if (num_channels != 1 && num_channels != 2) {
-        printf("Reset() called with unsupported channel count, num_channels = %d .", num_channels);
+        printf("Reset() called with unsupported channel count, num_channels = %d .\n", num_channels);
         return -1;
     }
     ResamplerMode mode;
     if (ComputeResamplerMode(inFreq, outFreq, &mode) != 0) {
-        printf("Reset() called with unsupported sample rates, inFreq = %d , outFreq = %d", inFreq, outFreq);
+        printf("Reset() called with unsupported sample rates, inFreq = %d , outFreq = %d .\n", inFreq, outFreq);
         return -1;
     }
     // Reinitialize internal state for the frequencies and sample rates.
