@@ -138,7 +138,7 @@ void ResampleTo(char *in_file, char *out_file, size_t out_sample_rate = 16000) {
 
 int main(int argc, char *argv[]) {
     printf("WebRtc Resampler\n");
-    printf("博客:http://tntmonks.cnblogs.com/\n");
+    printf("博客:http://cpuimage.cnblogs.com/\n");
     printf("音频插值重采样\n");
     printf("支持采样率: 8k、16k、32k、48k、96k\n");
     if (argc < 2)
