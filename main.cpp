@@ -112,7 +112,7 @@ int16_t *resampler(int16_t *data_in, size_t totalSampleCount, size_t in_sample_r
         int16_t samplePatchIn[max_samples] = {0};
         int16_t samplePatchOut[max_samples] = {0};
         memcpy(samplePatchIn, samplesIn, nLast * sizeof(int16_t));
-        rs.Push(samplesIn, nLast, samplePatchOut, maxLen, outLen);
+        rs.Push(samplePatchIn, lengthIn, samplePatchOut, maxLen, outLen);
         memcpy(samplesOut, samplePatchOut, (nLast * out_sample_rate / in_sample_rate) * sizeof(int16_t));
     }
     return data_out;
